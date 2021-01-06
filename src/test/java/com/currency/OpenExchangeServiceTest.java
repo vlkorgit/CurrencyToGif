@@ -66,10 +66,7 @@ class OpenExchangeServiceTest {
 	void yesterday_currency_from_service_should_be_equal_currency_from_file() {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			//File stubFile = ResourceUtils.getFile("classpath:json/yesterdayCurrenciesBaseUSD.json");
-			File stubFile = new File("json/yesterdayCurrenciesBaseUSD.json");
-			Assert.assertFalse(stubFile.exists());
-			Assert.fail();
+			File stubFile = ResourceUtils.getFile("classpath:json/yesterdayCurrenciesBaseUSD.json");
 			Double fromFile = mapper.readTree(stubFile).get("rates").get("RUB").asDouble();
 			stubFor(any(anyUrl())
 					.willReturn(aResponse()
