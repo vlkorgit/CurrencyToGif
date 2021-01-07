@@ -27,22 +27,27 @@ public class CurrencyToGifController {
 
     @GetMapping("/api/{code}")
     public ResponseEntity<CurrencyToGifResponse> getCurrencyGifUrl(@PathVariable("code") String code) {
+        Double today = null;
+        Double yesterday = null;
+        String answer = null;
         try {
-            Double today = currencyService.getTodayCurrency(code);
-            Double yesterday = currencyService.getYesterdayCurrency(code);
-            String answer;
+            today = currencyService.getTodayCurrency(code);
+            yesterday = currencyService.getYesterdayCurrency(code);
             if (today > yesterday) {
                 answer = gifService.getRandomRich();
             } else {
                 answer = gifService.getRandomFail();
             }
-            return new ResponseEntity<>(new CurrencyToGifResponse(false, "ok", answer), HttpStatus.OK);
+            return new ResponseEntity<>(
+                    new CurrencyToGifResponse(false, "ok", answer, code, today, yesterday),
+                    HttpStatus.OK);
         } catch (FeignException feignException) {
-            return new ResponseEntity<>(new CurrencyToGifResponse(true,
-                    "Something wrong with external api", null),
+            return new ResponseEntity<>(
+                    new CurrencyToGifResponse(true, "Something wrong with external api", answer, code, today, yesterday),
                     HttpStatus.OK);
         } catch (Exception exception) {
-            return new ResponseEntity<>(new CurrencyToGifResponse(true, "Wrong request parameters", null),
+            return new ResponseEntity<>(
+                    new CurrencyToGifResponse(true, "Wrong request parameters", answer, code, today, yesterday),
                     HttpStatus.OK);
         }
     }
@@ -51,9 +56,9 @@ public class CurrencyToGifController {
     public ResponseEntity<CurrencyToGifResponse> getCurrencyGifRedirectOrElseJson(@PathVariable("code") String code,
                                                                                   HttpServletResponse response) {
         ResponseEntity<CurrencyToGifResponse> result = getCurrencyGifUrl(code);
-        if (!result.getBody().error) {
+        if (!result.getBody().getError()) {
             try {
-                response.sendRedirect(result.getBody().gifUrl);
+                response.sendRedirect(result.getBody().getGifUrl());
             } catch (IOException e) {
                 e.printStackTrace();
             }

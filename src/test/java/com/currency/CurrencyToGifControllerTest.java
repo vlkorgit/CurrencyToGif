@@ -88,8 +88,9 @@ public class CurrencyToGifControllerTest {
 
 
             CurrencyToGifResponse response = currencyToGifController.getCurrencyGifUrl("RUB").getBody();
-            Assert.assertFalse(response.error);
-            Assert.assertEquals(response.gifUrl, imageUrl);
+            Assert.assertEquals(
+                    new CurrencyToGifResponse(false, "ok", imageUrl, "RUB", todayValueFromFile, yesterdayValueFromFile),
+                    response);
 
         } catch (Exception ex) {
             Assert.fail();
@@ -106,7 +107,7 @@ public class CurrencyToGifControllerTest {
                             .withFault(Fault.MALFORMED_RESPONSE_CHUNK)));
 
             CurrencyToGifResponse response = currencyToGifController.getCurrencyGifUrl("RUB").getBody();
-            Assert.assertTrue(response.error);
+            Assert.assertTrue(response.getError());
 
         } catch (Exception ex) {
             Assert.fail();
