@@ -39,7 +39,7 @@ public class Controller {
 			return new ResponseEntity<Object>(new ControllerResponse(false, "ok", answer), HttpStatus.OK);
 		} catch (FeignException feignException) {
 			return new ResponseEntity<Object>(new ControllerResponse(true,
-					"Something wrong with external api: " + feignException.getMessage(), null),
+					"Something wrong with external api", null),
 					HttpStatus.OK);
 		} catch (Exception exception) {
 			return new ResponseEntity<Object>(new ControllerResponse(true, "Wrong request parameters", null),
@@ -63,7 +63,7 @@ public class Controller {
 			return new ResponseEntity<Object>(new ControllerResponse(false, "ok", answer), HttpStatus.OK);
 		} catch (FeignException feignException) {
 			return new ResponseEntity<Object>(new ControllerResponse(true,
-					"Something wrong with external api: " + feignException.getMessage(),
+					"Something wrong with external api",
 					null),
 					HttpStatus.OK);
 		} catch (Exception exception) {
