@@ -23,6 +23,7 @@ public class OpenExchangeCurrencyService implements CurrencyService {
 
 	//openexchange в случае ошибки, например неправильного ключа, возвращает ответ с кодом 200 и json
 	//в случае отсутствия соединения feign бросит исключение
+	//также base можно менять только в платной версии
 	@Override
 	public Double getTodayCurrency(String currencyCode) throws Exception {
 		ResponseEntity<String> response = client.getTodayCurrencies(appId, base);
