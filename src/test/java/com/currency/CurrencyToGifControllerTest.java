@@ -89,7 +89,7 @@ public class CurrencyToGifControllerTest {
 
             CurrencyToGifResponse response = currencyToGifController.getCurrencyGifUrl("RUB").getBody();
             Assert.assertEquals(
-                    new CurrencyToGifResponse(false, "ok", imageUrl, "RUB", todayValueFromFile, yesterdayValueFromFile),
+                    new CurrencyToGifResponse(false, "ok", imageUrl, "USD", "RUB", todayValueFromFile, yesterdayValueFromFile),
                     response);
 
         } catch (Exception ex) {

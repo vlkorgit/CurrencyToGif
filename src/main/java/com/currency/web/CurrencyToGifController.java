@@ -5,6 +5,7 @@ import com.currency.services.CurrencyService;
 import com.currency.services.GifService;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,9 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/")
 public class CurrencyToGifController {
+
+    @Value("${currency.base}")
+    String baseCode;
 
     @Autowired
     CurrencyService currencyService;
@@ -39,15 +43,15 @@ public class CurrencyToGifController {
                 answer = gifService.getRandomFail();
             }
             return new ResponseEntity<>(
-                    new CurrencyToGifResponse(false, "ok", answer, code, today, yesterday),
+                    new CurrencyToGifResponse(false, "ok", answer, baseCode, code, today, yesterday),
                     HttpStatus.OK);
         } catch (FeignException feignException) {
             return new ResponseEntity<>(
-                    new CurrencyToGifResponse(true, "Something wrong with external api", answer, code, today, yesterday),
+                    new CurrencyToGifResponse(true, "Something wrong with external api", answer, baseCode, code, today, yesterday),
                     HttpStatus.OK);
         } catch (Exception exception) {
             return new ResponseEntity<>(
-                    new CurrencyToGifResponse(true, "Wrong request parameters", answer, code, today, yesterday),
+                    new CurrencyToGifResponse(true, "Wrong request parameters", answer, baseCode, code, today, yesterday),
                     HttpStatus.OK);
         }
     }
